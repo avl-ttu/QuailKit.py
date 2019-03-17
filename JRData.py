@@ -40,19 +40,21 @@ class JRData:
             print("Can't do.")
         return self
     
-    def __getitem__(self, index):
+    def __getitem__(self, interval):
         s = []
         t = []
         if self.set == "spgram":
-            startIn = int(index[0]/(1/self.spgramfs))
-            endIn = int(index[1]/(1/self.spgramfs) - startIn -1)
-            t = self.spgramDS[0,startIn:endIn]
+            startIn = int(interval[0]*self.spgramfs)
+            endIn = int(interval[1]*self.spgramfs - startIn)
+            step=1/self.spgramfs
+            t = np.arange(interval[0],interval[1],step)
             s = self.spgramDS[1:, startIn:endIn]
-            f = np.arange(self.fBegin,self.fEnd+self.spgramfs,self.spgramfs)
+            step=(self.fEnd-self.fBegin)/1000
+            f = np.arange(self.fBegin,self.fEnd,step)
             return t, f, s
         elif self.set == "audio":
-            startIn = int(index[0]/(1/self.audiofs))
-            endIn = int(index[1]/(1/self.audiofs) - startIn - 1)
+            startIn = int(interval[0]/(1/self.audiofs))
+            endIn = int(interval[1]/(1/self.audiofs) - startIn - 1)
             t = self.audioDS[0,startIn:endIn]
             s = self.audioDS[1:, startIn:endIn]
             return t, s
