@@ -5,7 +5,6 @@ Created on Mon Feb 25 10:45:14 2019
 @author: jreznick
 """
 
-import scipy.io as sio
 import h5py 
 import numpy as np
 
@@ -48,25 +47,28 @@ class JRData:
             endIn = int(interval[1]*self.spgramfs - startIn)
             step=1/self.spgramfs
             t = np.arange(interval[0],interval[1],step)
-            s = self.spgramDS[1:, startIn:endIn]
+            s = self.spgramDS[:, startIn:endIn]
             step=(self.fEnd-self.fBegin)/1000
-            f = np.arange(self.fBegin,self.fEnd,step)
+            print(self.fBegin,self.fEnd)
+            f = np.arange(self.fBegin,self.fEnd+1,step)
             return t, f, s
         elif self.set == "audio":
             startIn = int(interval[0]/(1/self.audiofs))
-            endIn = int(interval[1]/(1/self.audiofs) - startIn - 1)
-            t = self.audioDS[0,startIn:endIn]
-            s = self.audioDS[1:, startIn:endIn]
+            endIn = int(interval[1]/(1/self.audiofs) - startIn)
+            step = 1/self.audiofs
+            t = np.arange(interval[0],interval[1],step)
+            s = self.audioDS[:, startIn:endIn]
             return t, s
     
     def close(self):
         self.h5File.close()
 
-# DataObj = JRData("","SM304472_0+1_20181219$100000")
+#DataObj = JRData("C:\\Users\\joggl\\Texas Tech University\\Quail Call - Joel\\QuailKit\\JR_QuailKit\\SM304472_0+1_20181219$100000.h5")
 
 # #Long way
-# DataObj('audio')
-# t,s = DataObj[0,10]
+#DataObj('spgram1')
+#t,f,s = DataObj[0,100]
+#print(t.shape,f.shape,s.shape)
 # print(1)
 # #Short hand
 # t,s = DataObj('audio')[0,10]
