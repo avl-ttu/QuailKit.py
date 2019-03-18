@@ -22,6 +22,8 @@ class JRData:
         self.fBegin = self.spgramDS.attrs["props"][2]
         self.fEnd = self.spgramDS.attrs["props"][3]
         self.scale = self.spgramDS.attrs["props"][4]
+        self.datetime = self.h5File['/'].attrs["props"]
+        print(self.datetime,"h")
         self.audiofs = self.audioDS.attrs["audiofs"][0]
         
     def __call__(self, setting):
@@ -63,11 +65,11 @@ class JRData:
     def close(self):
         self.h5File.close()
 
-#DataObj = JRData("C:\\Users\\joggl\\Texas Tech University\\Quail Call - Joel\\QuailKit\\JR_QuailKit\\SM304472_0+1_20181219$100000.h5")
+DataObj = JRData("C:\\Users\\joggl\\Texas Tech University\\Quail Call - Joel\\QuailKit\\JR_QuailKit\\SM304472_0+1_20181219$100000.h5")
 
 # #Long way
-#DataObj('spgram1')
-#t,f,s = DataObj[0,100]
+DataObj('spgram1')
+t,f,s = DataObj[0,100]
 #print(t.shape,f.shape,s.shape)
 # print(1)
 # #Short hand
