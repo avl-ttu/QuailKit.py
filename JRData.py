@@ -45,12 +45,12 @@ class JRData:
         t = []
         if self.set == "spgram":
             startIn = int(interval[0]*self.spgramfs)
-            endIn = int(interval[1]*self.spgramfs - startIn)
+            endIn = int(interval[1]*self.spgramfs)
             step=1/self.spgramfs
             t = np.arange(interval[0],interval[1],step)
-            s = self.spgramDS[1:, startIn:endIn]
+            s = self.spgramDS[:, startIn:endIn]
             step=(self.fEnd-self.fBegin)/1000
-            f = np.arange(self.fBegin,self.fEnd,step)
+            f = np.arange(self.fBegin,self.fEnd+step,step)
             return t, f, s
         elif self.set == "audio":
             startIn = int(interval[0]/(1/self.audiofs))
