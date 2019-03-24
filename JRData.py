@@ -64,20 +64,21 @@ class JRData:
     def close(self):
         self.h5File.close()
 
-DataObj = JRData("C:\\Users\\joggl\\Texas Tech University\\Quail Call - Joel\\QuailKit\\JR_QuailKit\\SM304472_0+1_20181219$100000.h5")
-# #Long way
-DataObj('c2','spgram')
-t,f,s = DataObj[0,100]
-print(t.shape,f.shape, s.shape)
-# print(1)
-# #Short hand
-# t,s = DataObj('audio')[0,10]
-# print(2)
-# #Meaning, If I wanted to do a proccess over the spectrogram, I could do this
-# DataObj('spgram1')
-# for i in range(0,10):
-#     t, f, s = DataObj[0,10]
-# print(3)
-# #And it doesn't require me to do the short hand. It essentially sets which one
-# # to work with when "DataObj('spgram')" is stated.
-# DataObj.close()
+if __name__ == "__main__":
+    DataObj = JRData("C:\\Users\\joggl\\Texas Tech University\\Quail Call - Joel\\QuailKit\\JR_QuailKit\\SM304472_0+1_20181219$100000.h5")
+    # #Long way
+    DataObj('c2','spgram')
+    t,f,s = DataObj[0,100]
+    print(t.shape,f.shape, s.shape)
+    print(1)
+    #Short hand
+    t,s = DataObj('audio')[0,10]
+    print(2)
+    #Meaning, If I wanted to do a proccess over the spectrogram, I could do this
+    DataObj('spgram1')
+    for i in range(0,10):
+        t, f, s = DataObj[0,10]
+    print(3)
+    #And it doesn't require me to do the short hand. It essentially sets which one
+    # to work with when "DataObj('spgram')" is stated.
+    DataObj.close()
