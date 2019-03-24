@@ -6,7 +6,7 @@ import pandas as pd
 import h5py
 import numpy as np
 jrdata = JRData(os.path.join('Z:',os.sep,'QuailKit','data','SM304472_0+1_20181219$100000.h5'))
-jrdata('spgram1')
+jrdata('c1','spgram')
 t, f, s = jrdata[0,200]
 fig = plt.figure()
 plt.pcolormesh(t,f, s)
