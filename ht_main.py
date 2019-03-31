@@ -1,4 +1,4 @@
-from JRData import JRData
+from JR_Data import JRData
 import os
 from mpl_toolkits import mplot3d
 import matplotlib.pyplot as plt
