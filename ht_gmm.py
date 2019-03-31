@@ -18,15 +18,13 @@ det=pd.read_sql(
     r'FROM detection inner join data on detection.data_id=data.stream_id inner join audio_data ad on detection.data_id=ad.data_id inner join audio_node an on ad.audio_id=an.audio_id '
     r'WHERE DATEDIFF(millisecond,an.[start], detection.[start])/1000.0>240',engine)
 
-# for i in range(det.shape[0]):
-i=0
-jrdata = JRData(os.path.join('Z:',os.sep,'QuailKit','data',det['name'][i])) 
-fig, ax = plt.subplots(2,1)
-t, f, s = jrdata('c1','spgram1')[det['start'][i]-1,det['end'][i]+1]
-ax[0].pcolormesh(t,f, s)
-t, f, s = jrdata('c1','spgram1')[det['start'][i]-1,det['end'][i]+1]
-ax[1].pcolormesh(t,f, s)
-model=mixture.GaussianMixture(2)
-ss=model.fit_predict(s)
-
-plt.show()
+for i in range(det.shape[0]):
+    i=0
+    jrdata = JRData(os.path.join('Z:',os.sep,'QuailKit','data',det['name'][i])) 
+    fig, ax = plt.subplots(2,1)
+    t, f, s = jrdata('c1','spgram')[det['start'][i],det['end'][i]]
+    ax[0].pcolormesh(t,f, s)
+    model=mixture.GaussianMixture(2)
+    ss=model.fit_predict(np.reshape(s,(-1,1)))
+    ax[1].pcolormesh(t,f, np.reshape(ss,(s.shape[0],-1)))
+    plt.show()

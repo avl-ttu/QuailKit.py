@@ -54,8 +54,8 @@ class JRData:
             f = np.arange(self.fBegin,self.fEnd+1,step)
             return t, f, s
         elif self.set == "audio":
-            startIn = int(interval[0]/(1/self.audiofs))
-            endIn = int(interval[1]/(1/self.audiofs) - startIn)
+            startIn = int(interval[0]*self.audiofs)
+            endIn = int(interval[1]*self.audiofs)
             step = 1/self.audiofs
             t = np.arange(interval[0],interval[1],step)
             s = self.audioDS[:, startIn:endIn]
