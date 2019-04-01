@@ -22,7 +22,7 @@ for i in range(det.shape[0]):
     i=0
     jrdata = JRData(os.path.join('Z:',os.sep,'QuailKit','data',det['name'][i])) 
     fig, ax = plt.subplots(2,1)
-    t, f, s = jrdata('c1','spgram')[det['start'][i],det['end'][i]]
+    t, f, s = jrdata('c1','spgram')[det['start'][i]-1,det['end'][i]+1]
     ax[0].pcolormesh(t,f, s)
     model=mixture.GaussianMixture(2)
     ss=model.fit_predict(np.reshape(s,(-1,1)))
