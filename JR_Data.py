@@ -12,16 +12,20 @@ class JRData:
     def __init__(self,filepath, setting = 'spgram'):
         self.set = setting
         self.filepath = filepath
-        self.h5File = h5py.File(self.filepath, 'r+')
-        self.audioDS = self.h5File['c1/audio']
-        self.spgramDS = self.h5File['c1/spgram']
-        self.sizeDS = len(self.h5File['/'])
-        self.spgramfs = self.spgramDS.attrs["props"][0]
-        self.fBegin = self.spgramDS.attrs["props"][1]
-        self.fEnd = self.spgramDS.attrs["props"][2]
-        self.scale = self.spgramDS.attrs["props"][3]
-        self.datetime = self.h5File['/'].attrs["props"]
-        self.audiofs = self.audioDS.attrs["audiofs"][0]
+        if setting != 'new':
+            self.h5File = h5py.File(self.filepath, 'r+')
+            self.audioDS = self.h5File['c1/audio']
+            self.spgramDS = self.h5File['c1/spgram']
+            self.sizeDS = len(self.h5File['/'])
+            self.spgramfs = self.spgramDS.attrs["props"][0]
+            self.fBegin = self.spgramDS.attrs["props"][1]
+            self.fEnd = self.spgramDS.attrs["props"][2]
+            self.scale = self.spgramDS.attrs["props"][3]
+            self.datetime = self.h5File['/'].attrs["props"]
+            self.audiofs = self.audioDS.attrs["audiofs"][0]
+        else:
+            self.set = setting
+            self.h5File = h5py.File(self.filepath, 'w')
         
     def __call__(self, channel, setting):
         if setting == 'spgram' and int(channel[1]) <= self.sizeDS:
@@ -72,20 +76,5 @@ class JRData:
         self.h5File.close()
 
 if __name__ == "__main__":
-    DataObj = JRData("Z:\\QuailKit\\data\\SM304472_0+1_20181219$102500.h5")
-    # #Long way
-    DataObj('c2','spgram')
-    t,s,f = DataObj[50,100]
-    print(t.shape,f.shape, s.shape)
-    print(1)
-    #Short hand
-    t,s,f = DataObj('audio')[0,10]
-    print(2)
-    #Meaning, If I wanted to do a proccess over the spectrogram, I could do this
-    DataObj('spgram1')
-    for i in range(0,10):
-        t, f, s = DataObj[0,10]
-    print(3)
-    #And it doesn't require me to do the short hand. It essentially sets which one
-    # to work with when "DataObj('spgram')" is stated.
-    DataObj.close()
+    DataObj = JRData("C:\\Users\\jreznick\\Texas Tech University\\Quail Call - Joel\\FakeSQLServer\\thing.h5",'new')
+   
