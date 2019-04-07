@@ -12,20 +12,15 @@ class JRData:
     def __init__(self,filepath, setting = 'spgram'):
         self.set = setting
         self.filepath = filepath
-        if setting != 'new':
-            self.h5File = h5py.File(self.filepath, 'r+')
-            self.audioDS = self.h5File['c1/audio']
-            self.spgramDS = self.h5File['c1/spgram']
-            self.sizeDS = len(self.h5File['/'])
-            self.spgramfs = self.spgramDS.attrs["props"][0]
-            self.fBegin = self.spgramDS.attrs["props"][1]
-            self.fEnd = self.spgramDS.attrs["props"][2]
-            self.scale = self.spgramDS.attrs["props"][3]
-            self.datetime = self.h5File['/'].attrs["props"]
-            self.audiofs = self.audioDS.attrs["audiofs"][0]
-        else:
-            self.set = setting
-            self.h5File = h5py.File(self.filepath, 'w')
+        self.h5File = h5py.File(self.filepath, 'r+')
+        self.audioDS = self.h5File['c1/audio']
+        self.spgramDS = self.h5File['c1/spgram']
+        self.sizeDS = len(self.h5File['/'])
+        self.spgramfs = self.spgramDS.attrs["props"][0]
+        self.fBegin = self.spgramDS.attrs["props"][1]
+        self.fEnd = self.spgramDS.attrs["props"][2]
+        self.datetime = self.h5File['/'].attrs["props"]
+        self.audiofs = self.audioDS.attrs["audiofs"][0]
         
     def __call__(self, channel, setting):
         if setting == 'spgram' and int(channel[1]) <= self.sizeDS:
@@ -76,5 +71,6 @@ class JRData:
         self.h5File.close()
 
 if __name__ == "__main__":
-    DataObj = JRData("C:\\Users\\jreznick\\Texas Tech University\\Quail Call - Joel\\FakeSQLServer\\thing.h5",'new')
-   
+    DataObj = JRData("C:\\Users\\joggl\\Desktop\\Academics\\test h5\\SM304472_0+1_20181004$110000.h5",'new')
+    [t,s,f] = DataObj('c1','spgram')[10,20]
+    print(t.shape,s.shape,f.shape)
