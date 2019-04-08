@@ -16,9 +16,14 @@ class JRData:
         self.audioDS = self.h5File['c1/audio']
         self.spgramDS = self.h5File['c1/spgram']
         self.sizeDS = len(self.h5File['/'])
-        self.spgramfs = self.spgramDS.attrs["props"][0]
-        self.fBegin = self.spgramDS.attrs["props"][1]
-        self.fEnd = self.spgramDS.attrs["props"][2]
+        self.scale = self.spgramDS.attrs['IntProps'][0]
+        self.overlap = self.spgramDS.attrs['IntProps'][1]
+        self.spgramfs = self.spgramDS.attrs["IntProps"][2]
+        self.fBegin = self.spgramDS.attrs["IntProps"][3]
+        self.fEnd = self.spgramDS.attrs["IntProps"][4]
+        self.t0 = self.spgramDS.attrs['IntProps'][5]
+        self.data = self.spgramDS.attrs['StrProps'][0]
+        self.window = self.spgramDS.attrs['StrProps'][1]
         self.datetime = self.h5File['/'].attrs["props"]
         self.audiofs = self.audioDS.attrs["audiofs"][0]
         
@@ -26,10 +31,13 @@ class JRData:
         if setting == 'spgram' and int(channel[1]) <= self.sizeDS:
             self.set = setting
             self.spgramDS = self.h5File[channel+'/'+setting]
-            self.spgramfs = self.spgramDS.attrs["props"][0]
-            self.fBegin = self.spgramDS.attrs["props"][1]
-            self.fEnd = self.spgramDS.attrs["props"][2]
-            self.scale = self.spgramDS.attrs["props"][3]
+            self.scale = self.spgramDS.attrs['IntProps'][0]
+            self.overlap = self.spgramDS.attrs['IntProps'][1]
+            self.spgramfs = self.spgramDS.attrs["IntProps"][2]
+            self.fBegin = self.spgramDS.attrs["IntProps"][3]
+            self.fEnd = self.spgramDS.attrs["IntProps"][4]
+            self.data = self.spgramDS.attrs['StrProps'][0]
+            self.window = self.spgramDS.attrs['StrProps'][1]
         elif setting == 'audio' and int(channel[1]) <= self.sizeDS:
             self.set = setting 
             self.audioDS = self.h5File[channel+'/audio']
@@ -51,7 +59,8 @@ class JRData:
             step=1/self.spgramfs
             t = np.arange(startT,endT+0.1*step,step)
             s = self.spgramDS[:, startIn:endIn+1]
-            
+            s = np.transpose(s)
+
             step=(self.fEnd-self.fBegin)/1000
             f = np.arange(self.fBegin,self.fEnd+0.1*step,step)
 
@@ -71,6 +80,6 @@ class JRData:
         self.h5File.close()
 
 if __name__ == "__main__":
-    DataObj = JRData("C:\\Users\\joggl\\Desktop\\Academics\\test h5\\SM304472_0+1_20181004$110000.h5",'new')
-    [t,s,f] = DataObj('c1','spgram')[10,20]
+    DataObj = JRData("C:\\Users\\joggl\\Desktop\\Academics\\test h5\\SM304472_0+1_20181004$110000.h5")
+    [t,s,f] = DataObj('c1','spgram')[1760,1800]
     print(t.shape,s.shape,f.shape)
